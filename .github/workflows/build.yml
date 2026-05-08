@@ -1,15 +1,21 @@
-name: Build Python APK
+name: Build APK with Docker
 on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: kivy/buildozer:latest
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Build APK
-        uses: digreatbrian/buildozer-action@v2
+        run: |
+          buildozer init
+          buildozer android debug
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          command: buildozer android debug
-          workdir: ./
-          buildozer_version: stable
+          name: app
+          path: bin/*.apk
