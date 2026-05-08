@@ -1,17 +1,16 @@
-name: Build APK with Docker
+name: Build APK
 on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: kivy/buildozer:latest
+      image: docker.io/pewpewzorp/buildozer:latest
     steps:
       - uses: actions/checkout@v4
       
       - name: Build APK
         run: |
-          export FORCE_ROOT=1
           buildozer android debug
       
       - name: Upload APK
